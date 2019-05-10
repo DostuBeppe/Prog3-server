@@ -3,6 +3,7 @@ package it.unito.brunasmail.server;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -16,7 +17,7 @@ import java.util.Scanner;
 
 public class MainApp extends Application {
     private Stage primaryStage;
-    private AnchorPane rootLayout;
+    private SplitPane rootLayout;
 
     public MainApp(){
     }
