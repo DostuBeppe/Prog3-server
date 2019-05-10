@@ -1,21 +1,20 @@
 package it.unito.brunasmail.server.view;
 
+import it.unito.brunasmail.server.MainApp;
 import it.unito.brunasmail.server.model.Mail;
 import it.unito.brunasmail.server.model.User;
-import it.unito.brunasmail.server.Server;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 public class ServerRootLayoutController {
-    @FXML
-    private Server serverApp;
+    private MainApp mainApp;
     @FXML
     private ListView<String> userList;
     @FXML
     private ListView<String> logList;
 
-    public void setMainApp(Server serverApp) {
-        this.serverApp = serverApp;
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
     }
 
     @FXML
