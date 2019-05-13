@@ -1,8 +1,8 @@
-package it.unito.brunasmail.server.view;
+package it.unito.brunasmail.view;
 
-import it.unito.brunasmail.server.MainApp;
-import it.unito.brunasmail.server.model.Mail;
-import it.unito.brunasmail.server.model.User;
+import it.unito.brunasmail.MainApp;
+import it.unito.brunasmail.model.Mail;
+import it.unito.brunasmail.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
