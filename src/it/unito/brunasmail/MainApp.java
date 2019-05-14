@@ -1,6 +1,8 @@
 package it.unito.brunasmail;
 
 import it.unito.brunasmail.model.Mail;
+import it.unito.brunasmail.model.UserList;
+import it.unito.brunasmail.view.ServerRootLayoutController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,29 +19,17 @@ public class MainApp extends Application {
     private Stage primaryStage;
     private SplitPane rootLayout;
 
-    private List<String> userList;
+    private UserList userList;
+
+    public UserList getUserList(){ return userList; }
 
     public MainApp(){
-        userList = new ArrayList<>();
-        userList.add("beppe");
-        userList.add("stefano");
-        userList.add("matteo");
+        userList = new UserList();
+        userList.addUser("stefano");
+        userList.addUser("matteo");
+        userList.addUser("beppe");
     }
 
-    public boolean userExist(String user){
-        for(String s: userList){
-            if(s.equals(user))
-                return true;
-        }
-        return false;
-    }
-    public List<Mail> getUserInbox(String user){
-        List<Mail> inbox = new ArrayList<>();
-        inbox.add(new Mail("bruno@bruni.it", "Importante", "beppe@brunasmail.it;", 179250540110L, "Ciao beppe"));
-        inbox.add(new Mail("bruno@bruni.it", "Importantissima", "beppe@brunasmail.it", 147925042110L, "Ciaoooooo"));
-        inbox.add(new Mail("bruno@bruni.it", "Importantissima", "beppe@brunasmail.it; stefano@brunasmail.com;", 247925054010L, "Ciaoooooo"));
-        return inbox;
-    }
 
     public void initRootLayout(){
         try {
@@ -47,11 +37,13 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ServerRootLayout.fxml"));
             rootLayout = loader.load();
-
+            ServerRootLayoutController controller = loader.getController();
+            controller.setMainApp(this);
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
+
 
 
         } catch (IOException e) {

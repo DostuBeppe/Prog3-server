@@ -2,7 +2,7 @@ package it.unito.brunasmail.view;
 
 import it.unito.brunasmail.MainApp;
 import it.unito.brunasmail.model.Mail;
-import it.unito.brunasmail.model.User;
+import it.unito.brunasmail.model.UserList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
@@ -15,15 +15,14 @@ public class ServerRootLayoutController {
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+        userList.setItems(mainApp.getUserList().getUsers());
+
     }
 
-    @FXML
-    private void addUser(User user){
-        userList.getItems().add(user.getEmail() + " has logged in.");
-    }
+    public ServerRootLayoutController(){}
 
     @FXML
-    public void addLog(Mail mail){
-        logList.getItems().add(mail.getSender() + " sent an email to" + mail.getReceiversString());
+    private void initialize() {
     }
+
 }
