@@ -129,7 +129,7 @@ public class Mail implements Serializable {
         date = new SimpleObjectProperty<>();
         message = new SimpleStringProperty();
     }
-    private void writeObject(ObjectOutputStream s)throws IOException {
+    public void writeObject(ObjectOutputStream s)throws IOException {
         long millis = getDate().atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
         s.defaultWriteObject();
         s.writeUTF(getSender());
@@ -139,14 +139,19 @@ public class Mail implements Serializable {
         s.writeUTF(getMessage());
     }
 
-    private void readObject(ObjectInputStream s)throws IOException, ClassNotFoundException{
+    public void readObject(ObjectInputStream s)throws IOException{
         init();
         setSender(s.readUTF());
         setSubject(s.readUTF());
         setReceivers(s.readUTF());
         setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(s.readLong()),TimeZone.getDefault().toZoneId()));
         setMessage(s.readUTF());
+
     }
 
-
+    @Override
+    public String toString() {
+        return "Mail{" + "sender:" + sender + ", subject:" + subject + ", receivers:" + receivers + ",date:" + date + ", message:" + message + "}\n";
+    }
 }
+
