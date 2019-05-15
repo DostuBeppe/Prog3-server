@@ -25,9 +25,9 @@ public class MainApp extends Application {
 
     public MainApp(){
         userList = new UserList();
-        userList.addUser("stefano");
-        userList.addUser("matteo");
-        userList.addUser("beppe");
+        userList.addUser("stefano@brunasmail.it");
+        userList.addUser("matteo@brunasmail.it");
+        userList.addUser("beppe@brunasmail.it");
     }
 
 

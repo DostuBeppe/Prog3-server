@@ -22,14 +22,16 @@ public class Mail implements Serializable {
     private transient ListProperty<String> receivers;
     private transient ObjectProperty<LocalDateTime> date;
     private transient StringProperty message;
+    // private Boolean viewed;
 
     public Mail(String sender, String subject, String receivers, long timestamp, String message) {
         this.sender = new SimpleStringProperty(sender);
         this.subject = new SimpleStringProperty(subject);
-        this.receivers = new SimpleListProperty<>();
-        if(receivers!=null) setReceivers(receivers);
+        this.receivers= new SimpleListProperty<>();
+        if (receivers != null) setReceivers(receivers);
         this.date = new SimpleObjectProperty<LocalDateTime>(LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone.getDefault().toZoneId()));
         this.message = new SimpleStringProperty(message);
+        //this.viewed = viewed;
     }
 
     public Mail(){
@@ -48,6 +50,7 @@ public class Mail implements Serializable {
         this.sender.set(sender);
     }
 
+
     public String getSubject() {
         return subject.get();
     }
@@ -59,11 +62,12 @@ public class Mail implements Serializable {
     public void setSubject(String subject) {
         this.subject.set(subject);
     }
+
     public List<String> getReceivers() {
         return receivers;
     }
 
-    public void removeFromReceivers(String mail){
+    public void removeFromReceivers(String mail) {
         ArrayList<String> tmp = new ArrayList<>(receivers);
         tmp.remove(mail);
         receivers.set(FXCollections.observableArrayList(tmp));
@@ -75,22 +79,23 @@ public class Mail implements Serializable {
         while (m.find()) {
             list.add(m.group());
         }
+        //String[] array = r.split("\\\\s*;\\\\s*",-1);
         receivers.set(FXCollections.observableArrayList(list));
     }
 
     public StringProperty receiversStringProperty() {
-        if(receivers == null){
+        if (receivers == null) {
             return new SimpleStringProperty("");
         }
         StringBuilder str = new StringBuilder();
-        for(String s: receivers){
+        for (String s : receivers) {
             System.out.println("Dest: " + s);
-               str.append(s).append("; ");
+            str.append(s).append("; ");
         }
         return new SimpleStringProperty(str.toString());
     }
 
-    public String getReceiversString(){
+    public String getReceiversString() {
         return receiversStringProperty().get();
     }
 
@@ -102,7 +107,7 @@ public class Mail implements Serializable {
         return date;
     }
 
-    public String getFormattedDate(){
+    public String getFormattedDate() {
         return date.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm"));
     }
 
@@ -123,13 +128,15 @@ public class Mail implements Serializable {
     }
 
     private void init(){
-        sender = new SimpleStringProperty();
-        subject = new SimpleStringProperty();
-        receivers = new SimpleListProperty<>();
-        date = new SimpleObjectProperty<>();
-        message = new SimpleStringProperty();
+        this.sender = new SimpleStringProperty();
+        this.subject = new SimpleStringProperty();
+        this.receivers = new SimpleListProperty<String>();
+        this.date = new SimpleObjectProperty<>();
+        this.message = new SimpleStringProperty();
     }
-    public void writeObject(ObjectOutputStream s)throws IOException {
+
+    private void writeObject(ObjectOutputStream s)throws IOException {
+        //init();
         long millis = getDate().atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
         s.defaultWriteObject();
         s.writeUTF(getSender());
@@ -139,19 +146,14 @@ public class Mail implements Serializable {
         s.writeUTF(getMessage());
     }
 
-    public void readObject(ObjectInputStream s)throws IOException{
+    private void readObject(ObjectInputStream s)throws IOException, ClassNotFoundException{
         init();
         setSender(s.readUTF());
         setSubject(s.readUTF());
         setReceivers(s.readUTF());
+        //System.out.println("Local date Time"+LocalDateTime.ofInstant(Instant.ofEpochMilli(s.readLong()),TimeZone.getDefault().toZoneId()));
         setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(s.readLong()),TimeZone.getDefault().toZoneId()));
         setMessage(s.readUTF());
-
     }
 
-    @Override
-    public String toString() {
-        return "Mail{" + "sender:" + sender + ", subject:" + subject + ", receivers:" + receivers + ",date:" + date + ", message:" + message + "}\n";
-    }
 }
-
