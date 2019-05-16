@@ -4,6 +4,8 @@ import it.unito.brunasmail.model.Mail;
 import it.unito.brunasmail.model.UserList;
 import it.unito.brunasmail.view.ServerRootLayoutController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
@@ -20,6 +22,15 @@ public class MainApp extends Application {
     private SplitPane rootLayout;
 
     private UserList userList;
+    private ObservableList<String> logList = FXCollections.observableArrayList();
+
+    public ObservableList<String> getLogList() {
+        return logList;
+    }
+
+    public void addLog(String log){
+        logList.add(log);
+    }
 
     public UserList getUserList(){ return userList; }
 
