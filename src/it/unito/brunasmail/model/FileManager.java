@@ -1,6 +1,8 @@
 package it.unito.brunasmail.model;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -76,10 +78,14 @@ public class FileManager {
         return outbox;
     }
 
-    public synchronized static void delete(long millis, String user){
+    public synchronized static void delete(Mail  mail, String user){
         try {
-            File dir = new File("./files/"+user+"/");
-            for (File f : Objects.requireNonNull(dir.listFiles())){
+            System.out.println(mail.getMillis());
+            if(mail.isSent()) {
+                Files.delete(Paths.get("./files/" + user + "/in/" + mail.getMillis() + ".txt"));
+            } else  {
+
+                Files.delete(Paths.get("./files/" + user + "/out/" + mail.getMillis() + ".txt"));
 
             }
         } catch (Exception e) {

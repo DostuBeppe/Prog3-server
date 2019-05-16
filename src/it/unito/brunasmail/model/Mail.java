@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -81,7 +82,6 @@ public class Mail implements Serializable {
         while (m.find()) {
             list.add(m.group());
         }
-        //String[] array = r.split("\\\\s*;\\\\s*",-1);
         receivers.set(FXCollections.observableArrayList(list));
     }
 
@@ -129,7 +129,7 @@ public class Mail implements Serializable {
     }
 
     public long getMillis(){
-        return date.get().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli();
+        return getDate().atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
     }
 
     public boolean isSent() {

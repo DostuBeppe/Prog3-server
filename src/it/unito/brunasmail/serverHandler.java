@@ -66,7 +66,7 @@ public class serverHandler implements Runnable {
                 log = user + " deleted this email: " + mail.getMillis();
                 String finalLog = log;
                 Platform.runLater(() -> mainApp.addLog(finalLog));
-                FileManager.delete(mail.getMillis(),mail.getSender());
+                FileManager.delete(mail,user);
             }
             in.close();
             out.close();
