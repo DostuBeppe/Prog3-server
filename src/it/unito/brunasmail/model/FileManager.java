@@ -10,7 +10,7 @@ import java.util.*;
 
 public class FileManager {
 
-    public synchronized static void save(Mail mail){
+    public synchronized void save(Mail mail){
         try {
             Date date = new Date();
             long millis = date.getTime();
@@ -36,7 +36,7 @@ public class FileManager {
 
     }
 
-    public synchronized static List<Mail> loadInbox(String user){
+    public synchronized List<Mail> loadInbox(String user){
         List<Mail> inbox = new ArrayList<>();
         try {
             File dir = new File("./files/"+user+"/"+"in/");
@@ -57,7 +57,7 @@ public class FileManager {
         return inbox;
     }
 
-    public synchronized static List<Mail> loadOutbox(String user){
+    public synchronized List<Mail> loadOutbox(String user){
         List<Mail> outbox = new ArrayList<>();
         try {
             File dir = new File("./files/"+user+"/"+"out/");
@@ -78,15 +78,13 @@ public class FileManager {
         return outbox;
     }
 
-    public synchronized static void delete(Mail  mail, String user){
+    public synchronized void delete(Mail  mail, String user){
         try {
             System.out.println(mail.getMillis());
             if(mail.isSent()) {
-                Files.delete(Paths.get("./files/" + user + "/in/" + mail.getMillis() + ".txt"));
+                Files.deleteIfExists(Paths.get("./files/" + user + "/in/" + mail.getMillis() + ".txt"));
             } else  {
-
-                Files.delete(Paths.get("./files/" + user + "/out/" + mail.getMillis() + ".txt"));
-
+                Files.deleteIfExists(Paths.get("./files/" + user + "/out/" + mail.getMillis() + ".txt"));
             }
         } catch (Exception e) {
             e.printStackTrace();

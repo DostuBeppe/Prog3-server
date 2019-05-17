@@ -1,5 +1,6 @@
 package it.unito.brunasmail;
 
+import it.unito.brunasmail.model.FileManager;
 import it.unito.brunasmail.model.Mail;
 import it.unito.brunasmail.model.UserList;
 import it.unito.brunasmail.view.ServerRootLayoutController;
@@ -77,7 +78,7 @@ public class MainApp extends Application {
             System.out.println("Server Connesso al socket");
             while(true){
                 Socket incoming = s.accept();
-                Runnable r = new serverHandler(this, incoming);
+                Runnable r = new serverHandler(this, incoming, new FileManager());
                 Thread t = new Thread(r);
                 t.start();
             }

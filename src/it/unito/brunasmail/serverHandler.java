@@ -17,11 +17,13 @@ import java.util.List;
 public class serverHandler implements Runnable {
     private MainApp mainApp;
     private Socket incoming;
+    private FileManager fileManager;
 
 
-    public serverHandler(MainApp mainApp, Socket incoming){
+    public serverHandler(MainApp mainApp, Socket incoming, FileManager fileManager){
         this.mainApp = mainApp;
         this.incoming = incoming;
+        this.fileManager = fileManager;
     }
 
     @Override
@@ -36,8 +38,8 @@ public class serverHandler implements Runnable {
             if(action.equals("receive")){
                 user = (String)in.readObject();
                 if(userList.userExist(user)){
-                    out.writeObject(FileManager.loadInbox(user));
-                    out.writeObject(FileManager.loadOutbox(user));
+                    out.writeObject(fileManager.loadInbox(user));
+                    out.writeObject(fileManager.loadOutbox(user));
                 } else {
                     out.writeObject(null);
                     out.writeObject(null);
@@ -52,21 +54,21 @@ public class serverHandler implements Runnable {
                                         "\n***********************\n"+mail+"\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");
                         mail.getReceivers().remove(receiver);
                         wrong.setSent(false);
-                        FileManager.save(wrong);
+                        fileManager.save(wrong);
                     }
                 }
                 log = mail.getSender()+" sent an email to "+mail.getReceiversString();
                 String finalLog = log;
                 Platform.runLater(()->mainApp.addLog(finalLog));
                 mail.setSent(true);
-                FileManager.save(mail);
+                fileManager.save(mail);
             } else if (action.equals("delete")) {
                 user = (String) in.readObject();
                 Mail mail = (Mail) in.readObject();
+                fileManager.delete(mail,user);
                 log = user + " deleted this email: " + mail.getMillis();
                 String finalLog = log;
                 Platform.runLater(() -> mainApp.addLog(finalLog));
-                FileManager.delete(mail,user);
             }
             in.close();
             out.close();
