@@ -29,11 +29,12 @@ public class serverHandler implements Runnable {
         UserList userList = mainApp.getUserList();
         String log="";
         String user="";
+        String max;
         try {
             ObjectOutputStream out = new ObjectOutputStream(incoming.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(incoming.getInputStream());
             String action = (String)in.readObject();
-            if(action.equals("receive")){
+            if(action.equals("all")){
                 user = (String)in.readObject();
                 if(userList.userExist(user)){
                     out.writeObject(FileManager.loadInbox(user));
@@ -42,6 +43,12 @@ public class serverHandler implements Runnable {
                     out.writeObject(null);
                     out.writeObject(null);
                 }
+            } else if(action.equals("inbox")){
+
+                user=(String) in.readObject();
+                max=(String) in.readObject();
+                out.writeObject(FileManager.getUpdatedList(user,max));
+
             } else if (action.equals("send")){
                 Mail mail = (Mail)in.readObject();
                 List<String> receivers = new ArrayList<>(mail.getReceivers());
