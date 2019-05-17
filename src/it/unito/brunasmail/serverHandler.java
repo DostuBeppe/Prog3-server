@@ -67,6 +67,7 @@ public class serverHandler implements Runnable {
                 Platform.runLater(()->mainApp.addLog(finalLog));
                 mail.setSent(true);
                 FileManager.save(mail);
+                out.writeObject(mail);
             } else if (action.equals("delete")) {
                 user = (String) in.readObject();
                 Mail mail = (Mail) in.readObject();
