@@ -1,25 +1,19 @@
 package it.unito.brunasmail;
 
 
-import it.unito.brunasmail.model.FileManager;
 import it.unito.brunasmail.model.Mail;
 import it.unito.brunasmail.model.UserList;
-import it.unito.brunasmail.view.ServerRootLayoutController;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class serverHandler implements Runnable {
+public class ServerHandler implements Runnable {
     private MainApp mainApp;
     private Socket incoming;
 
-
-    public serverHandler(MainApp mainApp, Socket incoming){
+    public ServerHandler(MainApp mainApp, Socket incoming){
         this.mainApp = mainApp;
         this.incoming = incoming;
     }
@@ -66,8 +60,8 @@ public class serverHandler implements Runnable {
                 String finalLog = log;
                 Platform.runLater(()->mainApp.addLog(finalLog));
                 mail.setSent(true);
-                FileManager.save(mail);
-                out.writeObject(mail);
+                Mail s = FileManager.save(mail);
+                out.writeObject(s);
             } else if (action.equals("delete")) {
                 user = (String) in.readObject();
                 Mail mail = (Mail) in.readObject();

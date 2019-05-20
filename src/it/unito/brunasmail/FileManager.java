@@ -1,4 +1,6 @@
-package it.unito.brunasmail.model;
+package it.unito.brunasmail;
+
+import it.unito.brunasmail.model.Mail;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -10,7 +12,8 @@ import java.util.*;
 
 public class FileManager {
 
-    public synchronized static void save(Mail mail){
+    public synchronized static Mail save(Mail mail){
+        Mail newMail = null;
         try {
             Date date = new Date();
             long millis = date.getTime();
@@ -18,16 +21,16 @@ public class FileManager {
             List<String> receivers = mail.getReceivers();
             FileOutputStream f = new FileOutputStream("./files/"+sender+"/"+"out/"+millis+".txt");
             ObjectOutputStream o = new ObjectOutputStream(f);
-            Mail outputStream=new Mail(mail.getSender(),mail.getSubject(),mail.getReceiversString(), millis,mail.getMessage());
-            outputStream.setSent(true);
-            o.writeObject(outputStream);
+            newMail = new Mail(mail.getSender(),mail.getSubject(),mail.getReceiversString(), millis,mail.getMessage());
+            newMail.setSent(true);
+            o.writeObject(newMail);
             o.close();
             f.close();
             for (String r : receivers){
                 System.out.println(r);
                 f = new FileOutputStream("./files/"+r+"/"+"in/"+millis+".txt");
                 o = new ObjectOutputStream(f);
-                o.writeObject(new Mail(mail.getSender(),mail.getSubject(),mail.getReceiversString(), millis,mail.getMessage()));
+                o.writeObject(newMail);
                 o.close();
                 f.close();
             }
@@ -35,7 +38,7 @@ public class FileManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return newMail;
     }
 
     public synchronized static List<Mail> loadInbox(String user){

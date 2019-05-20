@@ -1,6 +1,5 @@
 package it.unito.brunasmail;
 
-import it.unito.brunasmail.model.Mail;
 import it.unito.brunasmail.model.UserList;
 import it.unito.brunasmail.view.ServerRootLayoutController;
 import javafx.application.Application;
@@ -14,8 +13,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainApp extends Application {
     private Stage primaryStage;
@@ -77,7 +74,7 @@ public class MainApp extends Application {
             System.out.println("Server Connesso al socket");
             while(true){
                 Socket incoming = s.accept();
-                Runnable r = new serverHandler(this, incoming);
+                Runnable r = new ServerHandler(this, incoming);
                 Thread t = new Thread(r);
                 t.start();
             }
