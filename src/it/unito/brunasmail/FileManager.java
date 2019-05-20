@@ -30,6 +30,7 @@ public class FileManager {
                 System.out.println(r);
                 f = new FileOutputStream("./files/"+r+"/"+"in/"+millis+".txt");
                 o = new ObjectOutputStream(f);
+                newMail.setSent(false);
                 o.writeObject(newMail);
                 o.close();
                 f.close();

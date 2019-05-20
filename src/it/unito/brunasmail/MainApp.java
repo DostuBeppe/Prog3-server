@@ -64,7 +64,9 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Server Brunas Mail");
         initRootLayout();
-        new Thread(this::setupServer).start();
+        Thread t = new Thread(this::setupServer);
+        t.setDaemon(true);
+        t.start();
     }
 
 

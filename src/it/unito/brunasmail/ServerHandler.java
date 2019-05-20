@@ -48,6 +48,7 @@ public class ServerHandler implements Runnable {
             } else if (action.equals("send")){
                 Mail mail = (Mail)in.readObject();
                 List<String> receivers = new ArrayList<>(mail.getReceivers());
+                boolean wrongReceiver = false;
                 for (String receiver : receivers){
                     if (!userList.userExist(receiver)){
                         Mail wrong = new Mail("System","Wrong email address",mail.getSender(),0,
@@ -56,9 +57,14 @@ public class ServerHandler implements Runnable {
                         mail.getReceivers().remove(receiver);
                         wrong.setSent(false);
                         fileManager.save(wrong);
+                        wrongReceiver = true;
                     }
                 }
-                log = mail.getSender()+" sent an email to "+mail.getReceiversString();
+                if (wrongReceiver){
+                    log = mail.getSender() + "tried to send an email to an invalid email address";
+                } else {
+                    log = mail.getSender() + " sent an email to " + mail.getReceiversString();
+                }
                 String finalLog = log;
                 Platform.runLater(()->mainApp.addLog(finalLog));
                 mail.setSent(true);
